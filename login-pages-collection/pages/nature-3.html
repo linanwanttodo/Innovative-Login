@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>流体水波登录 - 动态美学</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <style>
+        body {
+            background: #e0f2f7;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* 流体水波背景 */
+        .liquid-wave-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #81d4fa 0%, #4fc3f7 100%);
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .wave-shape {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 200%;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 40% 60% 50% 50% / 60% 60% 40% 40%;
+            animation: waveFlow 15s linear infinite;
+        }
+
+        .wave-shape:nth-child(2) {
+            background: rgba(255, 255, 255, 0.2);
+            animation-delay: -7.5s;
+            height: 250px;
+            border-radius: 50% 50% 40% 60% / 50% 40% 60% 50%;
+        }
+
+        @keyframes waveFlow {
+            0% {
+                transform: translateX(0) rotate(0deg);
+            }
+            100% {
+                transform: translateX(-50%) rotate(360deg);
+            }
+        }
+
+        /* 浮动气泡 */
+        .bubbles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .bubble {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: bubbleFloat 10s ease-in-out infinite;
+        }
+
+        .bubble:nth-child(1) {
+            width: 30px;
+            height: 30px;
+            top: 10%;
+            left: 20%;
+            animation-delay: 0s;
+        }
+
+        .bubble:nth-child(2) {
+            width: 40px;
+            height: 40px;
+            top: 50%;
+            right: 15%;
+            animation-delay: 2s;
+        }
+
+        .bubble:nth-child(3) {
+            width: 25px;
+            height: 25px;
+            bottom: 20%;
+            left: 30%;
+            animation-delay: 4s;
+        }
+
+        .bubble:nth-child(4) {
+            width: 35px;
+            height: 35px;
+            top: 30%;
+            right: 25%;
+            animation-delay: 6s;
+        }
+
+        @keyframes bubbleFloat {
+            0%, 100% {
+                transform: translateY(0px) scale(1);
+                opacity: 0.8;
+            }
+            50% {
+                transform: translateY(-30px) scale(1.2);
+                opacity: 1;
+            }
+        }
+
+        /* 主容器 */
+        .login-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+        }
+
+        /* 流体卡片 */
+        .liquid-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 50px 40px;
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.1);
+            animation: cardDrop 1s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes cardDrop {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* 标题区域 */
+        .header-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .main-title {
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: #0288d1;
+            margin-bottom: 8px;
+            animation: titleWave 1s ease-out 0.3s both;
+        }
+
+        .subtitle {
+            color: #039be5;
+            font-size: 1rem;
+            font-weight: 400;
+            animation: titleWave 1s ease-out 0.5s both;
+        }
+
+        @keyframes titleWave {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 表单样式 */
+        .form-group {
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .input-wrapper {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .liquid-input {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid #b3e5fc;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.7);
+            color: #0288d1;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-weight: 400;
+        }
+
+        .liquid-input::placeholder {
+            color: #81d4fa;
+        }
+
+        .liquid-input:focus {
+            outline: none;
+            border-color: #039be5;
+            box-shadow: 0 0 0 4px rgba(3, 155, 229, 0.15);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        /* 输入框水波纹动画 */
+        .input-wrapper::before {
+            content: ">";
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #039be5;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .liquid-input:focus + .input-wrapper::before {
+            left: 5px;
+            color: #0288d1;
+        }
+
+        /* 登录按钮 */
+        .liquid-btn {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #039be5, #0288d1);
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            margin: 32px 0 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .liquid-btn::before {
+            content: ">";
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5em;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .liquid-btn:hover::before {
+            left: 10px;
+            opacity: 1;
+        }
+
+        .liquid-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(2, 136, 209, 0.3);
+        }
+
+        .liquid-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .liquid-btn span {
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease;
+        }
+
+        .liquid-btn:hover span {
+            transform: translateX(15px);
+        }
+
+        /* 功能选项 */
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            color: #039be5;
+            font-size: 0.95rem;
+        }
+
+        .liquid-checkbox {
+            margin-right: 8px;
+            accent-color: #039be5;
+            transform: scale(1.1);
+        }
+
+        .forgot-link {
+            color: #0288d1;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .forgot-link::after {
+            content: ">";
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .forgot-link:hover::after {
+            right: -10px;
+            opacity: 1;
+        }
+
+        .forgot-link:hover {
+            color: #039be5;
+        }
+
+        /* 分割线 */
+        .liquid-divider {
+            text-align: center;
+            margin: 32px 0;
+            position: relative;
+        }
+
+        .liquid-divider::before {
+            content: ">";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #81d4fa;
+            font-size: 1.2em;
+            animation: dividerPulse 2s infinite alternate;
+        }
+
+        .liquid-divider::after {
+            content: ">";
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%) rotateY(180deg);
+            color: #81d4fa;
+            font-size: 1.2em;
+            animation: dividerPulse 2s infinite alternate reverse;
+        }
+
+        @keyframes dividerPulse {
+            0% { opacity: 0.5; transform: translateY(-50%) scale(1); }
+            100% { opacity: 1; transform: translateY(-50%) scale(1.2); }
+        }
+
+        .liquid-divider span {
+            background: rgba(255, 255, 255, 0.95);
+            color: #81d4fa;
+            padding: 0 20px;
+            font-size: 0.9rem;
+        }
+
+        /* 社交登录 */
+        .social-login {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 24px;
+        }
+
+        .social-btn {
+            flex: 1;
+            padding: 14px;
+            border: 2px solid #b3e5fc;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.7);
+            color: #039be5;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .social-btn:hover {
+            border-color: #0288d1;
+            color: #0288d1;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(2, 136, 209, 0.2);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        /* 注册链接 */
+        .signup-section {
+            text-align: center;
+            color: #039be5;
+            font-size: 0.95rem;
+        }
+
+        .signup-link {
+            color: #0288d1;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .signup-link:hover {
+            color: #039be5;
+        }
+
+        /* 返回按钮 */
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #039be5;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            z-index: 20;
+        }
+
+        .back-btn:hover {
+            background: #ffffff;
+            border-color: #0288d1;
+            color: #0288d1;
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(2, 136, 209, 0.2);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 480px) {
+            .liquid-card {
+                padding: 40px 24px;
+                margin: 20px;
+            }
+            
+            .main-title {
+                font-size: 2.2rem;
+            }
+            
+            .form-options {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+            
+            .social-login {
+                flex-direction: column;
+            }
+        }
+
+        /* 加载动画 */
+        .loading-liquid {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #ffffff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- 返回按钮 -->
+    <a href="../index.html" class="back-btn">←</a>
+
+    <!-- 流体水波背景 -->
+    <div class="liquid-wave-bg">
+        <div class="wave-shape"></div>
+        <div class="wave-shape"></div>
+    </div>
+
+    <!-- 浮动气泡 -->
+    <div class="bubbles">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+    </div>
+
+    <!-- 登录容器 -->
+    <div class="login-container">
+        <div class="liquid-card">
+            <div class="header-section">
+                <h1 class="main-title">水波登录</h1>
+                <p class="subtitle">流畅体验，动态美学</p>
+            </div>
+            
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <input type="email" class="liquid-input" placeholder="您的邮箱" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <input type="password" class="liquid-input" placeholder="您的密码" required>
+                    </div>
+                </div>
+                
+                <div class="form-options">
+                    <label class="checkbox-group">
+                        <input type="checkbox" class="liquid-checkbox">
+                        记住我
+                    </label>
+                    <a href="#" class="forgot-link">忘记密码？</a>
+                </div>
+                
+                <button type="submit" class="liquid-btn">
+                    <span>进入</span>
+                </button>
+                
+                <div class="liquid-divider">
+                    <span>或通过</span>
+                </div>
+                
+                <div class="social-login">
+                    <button type="button" class="social-btn">Google</button>
+                    <button type="button" class="social-btn">微信</button>
+                    <button type="button" class="social-btn">QQ</button>
+                </div>
+                
+                <div class="signup-section">
+                    还没有账户？ <a href="#" class="signup-link">注册新账户</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../assets/js/main.js"></script>
+    <script>
+        // 页面加载动画和交互效果
+        document.addEventListener('DOMContentLoaded', function() {
+            // 按钮点击效果
+            const loginBtn = document.querySelector('.liquid-btn');
+            loginBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const btnText = this.querySelector('span');
+                const originalText = btnText.textContent;
+                
+                btnText.innerHTML = '加载中 <span class="loading-liquid"></span>';
+                this.disabled = true;
+                
+                setTimeout(() => {
+                    btnText.textContent = '进入成功！';
+                    this.style.background = 'linear-gradient(135deg, #4fc3f7, #0288d1)';
+                }, 1500);
+                
+                setTimeout(() => {
+                    btnText.textContent = originalText;
+                    this.style.background = 'linear-gradient(135deg, #039be5, #0288d1)';
+                    this.disabled = false;
+                    alert('登录成功！这是一个演示页面。');
+                }, 3000);
+            });
+
+            // 鼠标移动视差效果
+            document.addEventListener('mousemove', function(e) {
+                const card = document.querySelector('.liquid-card');
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
+                
+                const xOffset = (x - 0.5) * 15;
+                const yOffset = (y - 0.5) * 15;
+                
+                card.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>抽象渐变登录 - 流动艺术</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <style>
+        body {
+            background: #1a1a2e;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* 流动渐变背景 */
+        .gradient-flow-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #ff007f, #a52a2a, #4b0082, #00ced1, #ff8c00);
+            background-size: 400% 400%;
+            animation: gradientMove 20s ease infinite;
+            z-index: 1;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* 抽象线条动画 */
+        .abstract-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .line {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            animation: lineDraw 10s linear infinite;
+        }
+
+        .line:nth-child(1) {
+            width: 2px;
+            height: 100%;
+            left: 20%;
+            animation-delay: 0s;
+        }
+
+        .line:nth-child(2) {
+            width: 2px;
+            height: 100%;
+            left: 50%;
+            animation-delay: 3s;
+        }
+
+        .line:nth-child(3) {
+            width: 2px;
+            height: 100%;
+            left: 80%;
+            animation-delay: 6s;
+        }
+
+        @keyframes lineDraw {
+            0% {
+                transform: translateY(-100%);
+            }
+            100% {
+                transform: translateY(100%);
+            }
+        }
+
+        /* 主容器 */
+        .login-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 480px;
+            padding: 20px;
+        }
+
+        /* 抽象卡片 */
+        .abstract-card {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 50px 40px;
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.1);
+            animation: cardSlideIn 1s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes cardSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 标题区域 */
+        .header-content {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .card-title {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+            animation: titlePulse 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes titlePulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .card-subtitle {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.2rem;
+            font-weight: 300;
+            animation: subtitleFadeIn 1s ease-out 0.5s both;
+        }
+
+        @keyframes subtitleFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 表单样式 */
+        .form-group {
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .input-field {
+            position: relative;
+        }
+
+        .abstract-input {
+            width: 100%;
+            padding: 18px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            font-weight: 400;
+        }
+
+        .abstract-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .abstract-input:focus {
+            outline: none;
+            border-color: #ff007f;
+            box-shadow: 0 0 0 4px rgba(255, 0, 127, 0.3);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* 登录按钮 */
+        .abstract-btn {
+            width: 100%;
+            padding: 20px;
+            border: none;
+            border-radius: 18px;
+            background: linear-gradient(135deg, #ff007f, #a52a2a);
+            color: white;
+            font-size: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            margin: 32px 0 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .abstract-btn::before {
+            content: ">";
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.8em;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .abstract-btn:hover::before {
+            left: 10px;
+            opacity: 1;
+        }
+
+        .abstract-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(255, 0, 127, 0.4);
+        }
+
+        .abstract-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .abstract-btn span {
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease;
+        }
+
+        .abstract-btn:hover span {
+            transform: translateX(15px);
+        }
+
+        /* 功能选项 */
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+        }
+
+        .abstract-checkbox {
+            margin-right: 8px;
+            accent-color: #ff007f;
+            transform: scale(1.2);
+        }
+
+        .forgot-link {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .forgot-link::after {
+            content: ">";
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .forgot-link:hover::after {
+            right: -10px;
+            opacity: 1;
+        }
+
+        .forgot-link:hover {
+            color: #a52a2a;
+        }
+
+        /* 分割线 */
+        .abstract-divider {
+            text-align: center;
+            margin: 32px 0;
+            position: relative;
+        }
+
+        .abstract-divider::before {
+            content: ">";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 1.5em;
+            animation: dividerGlow 2s infinite alternate;
+        }
+
+        .abstract-divider::after {
+            content: ">";
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%) rotateY(180deg);
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 1.5em;
+            animation: dividerGlow 2s infinite alternate reverse;
+        }
+
+        @keyframes dividerGlow {
+            0% { opacity: 0.5; transform: translateY(-50%) scale(1); }
+            100% { opacity: 1; transform: translateY(-50%) scale(1.1); }
+        }
+
+        .abstract-divider span {
+            background: rgba(0, 0, 0, 0.6);
+            color: rgba(255, 255, 255, 0.6);
+            padding: 0 20px;
+            font-size: 1rem;
+        }
+
+        /* 社交登录 */
+        .social-login {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 24px;
+        }
+
+        .social-btn {
+            flex: 1;
+            padding: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .social-btn:hover {
+            border-color: #ff007f;
+            color: #ff007f;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 0, 127, 0.2);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        /* 注册链接 */
+        .signup-section {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+        }
+
+        .signup-link {
+            color: #ff8c00;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .signup-link:hover {
+            color: #ff007f;
+        }
+
+        /* 返回按钮 */
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            z-index: 20;
+        }
+
+        .back-btn:hover {
+            background: rgba(0, 0, 0, 0.7);
+            border-color: #ff007f;
+            color: #ff007f;
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(255, 0, 127, 0.2);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 480px) {
+            .abstract-card {
+                padding: 40px 24px;
+                margin: 20px;
+            }
+            
+            .card-title {
+                font-size: 2.5rem;
+            }
+            
+            .form-options {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+            
+            .social-login {
+                flex-direction: column;
+            }
+        }
+
+        /* 加载动画 */
+        .loading-abstract-2 {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #ffffff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- 返回按钮 -->
+    <a href="../index.html" class="back-btn">←</a>
+
+    <!-- 流动渐变背景 -->
+    <div class="gradient-flow-bg"></div>
+
+    <!-- 抽象线条动画 -->
+    <div class="abstract-lines">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+    </div>
+
+    <!-- 登录容器 -->
+    <div class="login-container">
+        <div class="abstract-card">
+            <div class="header-content">
+                <h1 class="card-title">流动登录</h1>
+                <p class="card-subtitle">抽象艺术，视觉盛宴</p>
+            </div>
+            
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <div class="input-field">
+                        <input type="email" class="abstract-input" placeholder="您的邮箱" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="input-field">
+                        <input type="password" class="abstract-input" placeholder="您的密码" required>
+                    </div>
+                </div>
+                
+                <div class="form-options">
+                    <label class="checkbox-group">
+                        <input type="checkbox" class="abstract-checkbox">
+                        记住我
+                    </label>
+                    <a href="#" class="forgot-link">忘记密码？</a>
+                </div>
+                
+                <button type="submit" class="abstract-btn">
+                    <span>进入</span>
+                </button>
+                
+                <div class="abstract-divider">
+                    <span>或通过</span>
+                </div>
+                
+                <div class="social-login">
+                    <button type="button" class="social-btn">Google</button>
+                    <button type="button" class="social-btn">微信</button>
+                    <button type="button" class="social-btn">QQ</button>
+                </div>
+                
+                <div class="signup-section">
+                    还没有账户？ <a href="#" class="signup-link">注册新账户</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../assets/js/main.js"></script>
+    <script>
+        // 页面加载动画和交互效果
+        document.addEventListener('DOMContentLoaded', function() {
+            // 按钮点击效果
+            const loginBtn = document.querySelector('.abstract-btn');
+            loginBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const btnText = this.querySelector('span');
+                const originalText = btnText.textContent;
+                
+                btnText.innerHTML = '加载中 <span class="loading-abstract-2"></span>';
+                this.disabled = true;
+                
+                setTimeout(() => {
+                    btnText.textContent = '进入成功！';
+                    this.style.background = 'linear-gradient(135deg, #48bb78, #38a169)';
+                }, 1500);
+                
+                setTimeout(() => {
+                    btnText.textContent = originalText;
+                    this.style.background = 'linear-gradient(135deg, #ff007f, #a52a2a)';
+                    this.disabled = false;
+                    alert('登录成功！这是一个演示页面。');
+                }, 3000);
+            });
+
+            // 鼠标移动视差效果
+            document.addEventListener('mousemove', function(e) {
+                const card = document.querySelector('.abstract-card');
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
+                
+                const xOffset = (x - 0.5) * 15;
+                const yOffset = (y - 0.5) * 15;
+                
+                card.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
+

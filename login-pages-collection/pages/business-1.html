@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>柔和商务登录 - 专业简约</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* 柔和背景动画 */
+        .soft-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            opacity: 0.1;
+            animation: softMove 20s ease-in-out infinite alternate;
+            z-index: 1;
+        }
+
+        @keyframes softMove {
+            0% { transform: translateX(0) translateY(0); }
+            100% { transform: translateX(20px) translateY(10px); }
+        }
+
+        /* 浮动圆形装饰 */
+        .floating-circles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .circle {
+            position: absolute;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 50%;
+            animation: floatCircle 15s ease-in-out infinite;
+        }
+
+        .circle:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .circle:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 60%;
+            right: 15%;
+            animation-delay: 5s;
+        }
+
+        .circle:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            bottom: 30%;
+            left: 20%;
+            animation-delay: 10s;
+        }
+
+        @keyframes floatCircle {
+            0%, 100% {
+                transform: translateY(0px) scale(1);
+                opacity: 0.3;
+            }
+            50% {
+                transform: translateY(-20px) scale(1.1);
+                opacity: 0.6;
+            }
+        }
+
+        /* 主容器 */
+        .login-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 420px;
+            padding: 20px;
+        }
+
+        /* 商务卡片 */
+        .business-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 50px 40px;
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.2);
+            animation: cardSlideUp 1s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes cardSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 标题区域 */
+        .header-content {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .card-title {
+            font-size: 2.4rem;
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 8px;
+            animation: titleFadeIn 1s ease-out 0.3s both;
+        }
+
+        .card-subtitle {
+            color: #718096;
+            font-size: 1rem;
+            font-weight: 400;
+            animation: titleFadeIn 1s ease-out 0.5s both;
+        }
+
+        @keyframes titleFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 表单样式 */
+        .form-group {
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .business-input {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            background: #ffffff;
+            color: #4a5568;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-weight: 400;
+        }
+
+        .business-input::placeholder {
+            color: #a0aec0;
+        }
+
+        .business-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: #ffffff;
+        }
+
+        /* 登录按钮 */
+        .business-btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 32px 0 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .business-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .business-btn:active {
+            transform: translateY(0);
+        }
+
+        /* 功能选项 */
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        .business-checkbox {
+            margin-right: 8px;
+            accent-color: #667eea;
+        }
+
+        .forgot-link {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .forgot-link:hover {
+            color: #764ba2;
+        }
+
+        /* 分割线 */
+        .business-divider {
+            text-align: center;
+            margin: 32px 0;
+            position: relative;
+        }
+
+        .business-divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e2e8f0;
+        }
+
+        .business-divider span {
+            background: #ffffff;
+            color: #a0aec0;
+            padding: 0 20px;
+            font-size: 0.9rem;
+            position: relative;
+        }
+
+        /* 社交登录 */
+        .social-login {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .social-btn {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background: #ffffff;
+            color: #718096;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .social-btn:hover {
+            border-color: #667eea;
+            color: #667eea;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+        }
+
+        /* 注册链接 */
+        .signup-section {
+            text-align: center;
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        .signup-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .signup-link:hover {
+            color: #764ba2;
+        }
+
+        /* 底部导航栏 - 参考设计 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(226, 232, 240, 0.5);
+            padding: 12px 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px 12px;
+            text-decoration: none;
+            color: #718096;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+            margin: 0 4px;
+        }
+
+        .nav-item.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .nav-item:nth-child(2) {
+            background: #4299e1;
+            color: white;
+        }
+
+        .nav-item:nth-child(3) {
+            background: #ed8936;
+            color: white;
+        }
+
+        .nav-item:nth-child(4) {
+            background: #9f7aea;
+            color: white;
+        }
+
+        .nav-item:nth-child(5) {
+            background: #38b2ac;
+            color: white;
+        }
+
+        .nav-icon {
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        .nav-text {
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* 返回按钮 */
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(226, 232, 240, 0.5);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #667eea;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            z-index: 20;
+        }
+
+        .back-btn:hover {
+            background: #ffffff;
+            border-color: #667eea;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 480px) {
+            .business-card {
+                padding: 40px 24px;
+                margin: 20px;
+            }
+            
+            .card-title {
+                font-size: 2rem;
+            }
+            
+            .form-options {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+            
+            .social-login {
+                flex-direction: column;
+            }
+
+            .nav-container {
+                padding: 0 10px;
+            }
+
+            .nav-item {
+                margin: 0 2px;
+                padding: 6px 8px;
+            }
+        }
+
+        /* 加载动画 */
+        .loading-business {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #ffffff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- 返回按钮 -->
+    <a href="../index.html" class="back-btn">←</a>
+
+    <!-- 柔和背景动画 -->
+    <div class="soft-bg"></div>
+
+    <!-- 浮动圆形装饰 -->
+    <div class="floating-circles">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+    </div>
+
+    <!-- 登录容器 -->
+    <div class="login-container">
+        <div class="business-card">
+            <div class="header-content">
+                <h1 class="card-title">商务登录</h1>
+                <p class="card-subtitle">专业简约，高效安全</p>
+            </div>
+            
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <input type="email" class="business-input" placeholder="企业邮箱" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <input type="password" class="business-input" placeholder="登录密码" required>
+                    </div>
+                </div>
+                
+                <div class="form-options">
+                    <label class="checkbox-group">
+                        <input type="checkbox" class="business-checkbox">
+                        保持登录
+                    </label>
+                    <a href="#" class="forgot-link">忘记密码？</a>
+                </div>
+                
+                <button type="submit" class="business-btn">
+                    <span>登录</span>
+                </button>
+                
+                <div class="business-divider">
+                    <span>或使用</span>
+                </div>
+                
+                <div class="social-login">
+                    <button type="button" class="social-btn">Google</button>
+                    <button type="button" class="social-btn">微信</button>
+                    <button type="button" class="social-btn">钉钉</button>
+                </div>
+                
+                <div class="signup-section">
+                    还没有账户？ <a href="#" class="signup-link">立即注册</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 底部导航栏 -->
+    <div class="bottom-nav">
+        <div class="nav-container">
+            <a href="#" class="nav-item active">
+                <div class="nav-icon">🏠</div>
+                <div class="nav-text">首页</div>
+            </a>
+            <a href="#" class="nav-item">
+                <div class="nav-icon">👤</div>
+                <div class="nav-text">关于</div>
+            </a>
+            <a href="#" class="nav-item">
+                <div class="nav-icon">📁</div>
+                <div class="nav-text">项目</div>
+            </a>
+            <a href="#" class="nav-item">
+                <div class="nav-icon">⚡</div>
+                <div class="nav-text">技能</div>
+            </a>
+            <a href="#" class="nav-item">
+                <div class="nav-icon">📞</div>
+                <div class="nav-text">联系</div>
+            </a>
+        </div>
+    </div>
+
+    <script src="../assets/js/main.js"></script>
+    <script>
+        // 页面加载动画和交互效果
+        document.addEventListener('DOMContentLoaded', function() {
+            // 按钮点击效果
+            const loginBtn = document.querySelector('.business-btn');
+            loginBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const btnText = this.querySelector('span');
+                const originalText = btnText.textContent;
+                
+                btnText.innerHTML = '登录中 <span class="loading-business"></span>';
+                this.disabled = true;
+                
+                setTimeout(() => {
+                    btnText.textContent = '登录成功！';
+                    this.style.background = 'linear-gradient(135deg, #48bb78, #38a169)';
+                }, 1500);
+                
+                setTimeout(() => {
+                    btnText.textContent = originalText;
+                    this.style.background = 'linear-gradient(135deg, #667eea, #764ba2)';
+                    this.disabled = false;
+                    alert('登录成功！这是一个演示页面。');
+                }, 3000);
+            });
+
+            // 导航栏交互
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // 鼠标移动视差效果
+            document.addEventListener('mousemove', function(e) {
+                const card = document.querySelector('.business-card');
+                const circles = document.querySelectorAll('.circle');
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
+                
+                const cardXOffset = (x - 0.5) * 10;
+                const cardYOffset = (y - 0.5) * 10;
+                card.style.transform = `translate(${cardXOffset}px, ${cardYOffset}px)`;
+
+                circles.forEach((circle, index) => {
+                    const speed = (index + 1) * 0.3;
+                    const circleXOffset = (x - 0.5) * speed * 15;
+                    const circleYOffset = (y - 0.5) * speed * 15;
+                    circle.style.transform = `translate(${circleXOffset}px, ${circleYOffset}px)`;
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+

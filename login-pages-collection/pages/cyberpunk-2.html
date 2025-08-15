@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D立体登录 - 未来科技</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            perspective: 1000px;
+        }
+
+        /* 3D背景元素 */
+        .bg-3d {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .cube {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            transform-style: preserve-3d;
+            animation: rotateCube 20s linear infinite;
+        }
+
+        .cube-face {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: rgba(0, 150, 255, 0.1);
+            border: 1px solid rgba(0, 150, 255, 0.3);
+        }
+
+        .cube-face.front { transform: rotateY(0deg) translateZ(30px); }
+        .cube-face.back { transform: rotateY(180deg) translateZ(30px); }
+        .cube-face.right { transform: rotateY(90deg) translateZ(30px); }
+        .cube-face.left { transform: rotateY(-90deg) translateZ(30px); }
+        .cube-face.top { transform: rotateX(90deg) translateZ(30px); }
+        .cube-face.bottom { transform: rotateX(-90deg) translateZ(30px); }
+
+        .cube:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .cube:nth-child(2) {
+            top: 60%;
+            right: 15%;
+            animation-delay: 5s;
+        }
+
+        .cube:nth-child(3) {
+            bottom: 30%;
+            left: 20%;
+            animation-delay: 10s;
+        }
+
+        @keyframes rotateCube {
+            0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+            100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
+        }
+
+        /* 粒子系统 */
+        .particles-3d {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .particle-3d {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #0096ff;
+            border-radius: 50%;
+            animation: particleMove 15s linear infinite;
+            box-shadow: 0 0 10px #0096ff;
+        }
+
+        @keyframes particleMove {
+            0% {
+                transform: translate3d(0, 100vh, 0) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+                transform: translate3d(0, 90vh, 100px) scale(1);
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translate3d(0, -100px, 200px) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* 主容器 */
+        .login-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 480px;
+            padding: 20px;
+            transform-style: preserve-3d;
+        }
+
+        /* 3D卡片 */
+        .card-3d {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 50px 40px;
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.3),
+                0 0 50px rgba(0, 150, 255, 0.1);
+            animation: cardFloat 6s ease-in-out infinite;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.3s ease;
+        }
+
+        @keyframes cardFloat {
+            0%, 100% { transform: translateY(0px) rotateX(0deg); }
+            50% { transform: translateY(-10px) rotateX(2deg); }
+        }
+
+        .card-3d::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #0096ff, #00d4ff, #0096ff);
+            border-radius: 20px;
+            z-index: -1;
+            animation: borderGlow 3s ease-in-out infinite alternate;
+        }
+
+        .card-3d::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(26, 26, 46, 0.95);
+            border-radius: 20px;
+            z-index: -1;
+        }
+
+        @keyframes borderGlow {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.8; }
+        }
+
+        /* 标题区域 */
+        .title-3d {
+            text-align: center;
+            margin-bottom: 40px;
+            transform: translateZ(20px);
+        }
+
+        .main-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #0096ff, #00d4ff, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            animation: titlePulse 2s ease-in-out infinite alternate;
+            text-shadow: 0 0 30px rgba(0, 150, 255, 0.5);
+        }
+
+        @keyframes titlePulse {
+            0% { transform: scale(1) translateZ(0px); }
+            100% { transform: scale(1.05) translateZ(10px); }
+        }
+
+        .subtitle-3d {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+            font-weight: 300;
+            animation: subtitleFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes subtitleFloat {
+            0%, 100% { transform: translateZ(0px); }
+            50% { transform: translateZ(15px); }
+        }
+
+        /* 表单样式 */
+        .form-3d {
+            transform-style: preserve-3d;
+        }
+
+        .form-group-3d {
+            margin-bottom: 30px;
+            position: relative;
+            transform: translateZ(10px);
+            transition: transform 0.3s ease;
+        }
+
+        .form-group-3d:hover {
+            transform: translateZ(20px);
+        }
+
+        .input-3d {
+            width: 100%;
+            padding: 18px 25px;
+            border: none;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            color: white;
+            font-size: 16px;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(0, 150, 255, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .input-3d::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .input-3d:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #0096ff;
+            box-shadow: 
+                0 0 25px rgba(0, 150, 255, 0.4),
+                0 10px 25px rgba(0, 0, 0, 0.3);
+            transform: translateY(-5px) translateZ(10px);
+        }
+
+        /* 3D按钮 */
+        .btn-3d {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #0096ff, #00d4ff);
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            margin: 35px 0 30px;
+            position: relative;
+            transform: translateZ(15px);
+            box-shadow: 
+                0 10px 25px rgba(0, 150, 255, 0.3),
+                0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-3d::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #00d4ff, #0096ff);
+            border-radius: 15px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .btn-3d:hover::before {
+            opacity: 1;
+        }
+
+        .btn-3d:hover {
+            transform: translateY(-8px) translateZ(25px);
+            box-shadow: 
+                0 20px 40px rgba(0, 150, 255, 0.4),
+                0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-3d:active {
+            transform: translateY(-4px) translateZ(20px);
+        }
+
+        .btn-3d span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 功能链接 */
+        .options-3d {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            transform: translateZ(10px);
+        }
+
+        .checkbox-3d {
+            display: flex;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            transition: transform 0.3s ease;
+        }
+
+        .checkbox-3d:hover {
+            transform: translateZ(5px);
+        }
+
+        .checkbox-3d input {
+            margin-right: 10px;
+            accent-color: #0096ff;
+        }
+
+        .link-3d {
+            color: #0096ff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .link-3d::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #0096ff, #00d4ff);
+            transition: width 0.3s ease;
+        }
+
+        .link-3d:hover::after {
+            width: 100%;
+        }
+
+        .link-3d:hover {
+            color: #00d4ff;
+            text-shadow: 0 0 10px rgba(0, 150, 255, 0.5);
+            transform: translateZ(5px);
+        }
+
+        /* 分割线 */
+        .divider-3d {
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+            transform: translateZ(5px);
+        }
+
+        .divider-3d::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0, 150, 255, 0.5), transparent);
+        }
+
+        .divider-3d span {
+            background: rgba(26, 26, 46, 0.9);
+            color: rgba(255, 255, 255, 0.7);
+            padding: 0 20px;
+            font-size: 0.9rem;
+        }
+
+        /* 注册区域 */
+        .signup-3d {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            transform: translateZ(5px);
+        }
+
+        .signup-link-3d {
+            color: #0096ff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .signup-link-3d:hover {
+            color: #00d4ff;
+            text-shadow: 0 0 10px rgba(0, 150, 255, 0.5);
+        }
+
+        /* 返回按钮 */
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(0, 150, 255, 0.3);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0096ff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            z-index: 20;
+            transform: translateZ(10px);
+        }
+
+        .back-btn:hover {
+            background: rgba(0, 150, 255, 0.2);
+            transform: scale(1.1) translateZ(20px);
+            box-shadow: 0 10px 25px rgba(0, 150, 255, 0.3);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 480px) {
+            .card-3d {
+                padding: 40px 25px;
+                margin: 20px;
+            }
+            
+            .main-title {
+                font-size: 2.2rem;
+            }
+            
+            .options-3d {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 返回按钮 -->
+    <a href="../index.html" class="back-btn">←</a>
+
+    <!-- 3D背景元素 -->
+    <div class="bg-3d">
+        <div class="cube">
+            <div class="cube-face front"></div>
+            <div class="cube-face back"></div>
+            <div class="cube-face right"></div>
+            <div class="cube-face left"></div>
+            <div class="cube-face top"></div>
+            <div class="cube-face bottom"></div>
+        </div>
+        <div class="cube">
+            <div class="cube-face front"></div>
+            <div class="cube-face back"></div>
+            <div class="cube-face right"></div>
+            <div class="cube-face left"></div>
+            <div class="cube-face top"></div>
+            <div class="cube-face bottom"></div>
+        </div>
+        <div class="cube">
+            <div class="cube-face front"></div>
+            <div class="cube-face back"></div>
+            <div class="cube-face right"></div>
+            <div class="cube-face left"></div>
+            <div class="cube-face top"></div>
+            <div class="cube-face bottom"></div>
+        </div>
+    </div>
+
+    <!-- 3D粒子系统 -->
+    <div class="particles-3d" id="particles3d"></div>
+
+    <!-- 登录容器 -->
+    <div class="login-container">
+        <div class="card-3d">
+            <div class="title-3d">
+                <h1 class="main-title">3D LOGIN</h1>
+                <p class="subtitle-3d">立体空间，未来体验</p>
+            </div>
+            
+            <form class="form-3d" id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group-3d">
+                    <input type="email" class="input-3d" placeholder="邮箱地址" required>
+                </div>
+                
+                <div class="form-group-3d">
+                    <input type="password" class="input-3d" placeholder="密码" required>
+                </div>
+                
+                <div class="options-3d">
+                    <label class="checkbox-3d">
+                        <input type="checkbox">
+                        记住我
+                    </label>
+                    <a href="#" class="link-3d">忘记密码？</a>
+                </div>
+                
+                <button type="submit" class="btn-3d">
+                    <span>立即登录</span>
+                </button>
+                
+                <div class="divider-3d">
+                    <span>新用户？</span>
+                </div>
+                
+                <div class="signup-3d">
+                    还没有账户？ <a href="#" class="signup-link-3d">立即注册</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../assets/js/main.js"></script>
+    <script>
+        // 创建3D粒子效果
+        function create3DParticles() {
+            const particlesContainer = document.getElementById('particles3d');
+            const particleCount = 25;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle-3d';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (Math.random() * 5 + 10) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // 页面加载动画和交互效果
+        document.addEventListener('DOMContentLoaded', function() {
+            create3DParticles();
+            
+            // 添加鼠标移动3D效果
+            document.addEventListener('mousemove', function(e) {
+                const card = document.querySelector('.card-3d');
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                const rotateX = (y / rect.height) * 10;
+                const rotateY = (x / rect.width) * -10;
+                
+                card.style.transform = `
+                    perspective(1000px) 
+                    rotateX(${rotateX}deg) 
+                    rotateY(${rotateY}deg) 
+                    translateZ(0px)
+                `;
+            });
+
+            // 鼠标离开时重置
+            document.addEventListener('mouseleave', function() {
+                const card = document.querySelector('.card-3d');
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
+            });
+
+            // 添加输入框3D效果
+            const inputs = document.querySelectorAll('.input-3d');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.parentElement.style.transform = 'translateZ(25px)';
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.parentElement.style.transform = 'translateZ(10px)';
+                });
+            });
+
+            // 添加按钮点击3D效果
+            const btn = document.querySelector('.btn-3d');
+            btn.addEventListener('mousedown', function() {
+                this.style.transform = 'translateY(-4px) translateZ(20px) scale(0.98)';
+            });
+            
+            btn.addEventListener('mouseup', function() {
+                this.style.transform = 'translateY(-8px) translateZ(25px) scale(1)';
+            });
+
+            // 添加键盘导航3D效果
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Tab') {
+                    const focusedElement = document.activeElement;
+                    if (focusedElement.classList.contains('input-3d')) {
+                        focusedElement.parentElement.style.transform = 'translateZ(30px)';
+                        setTimeout(() => {
+                            focusedElement.parentElement.style.transform = 'translateZ(20px)';
+                        }, 200);
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

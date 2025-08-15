@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>抽象几何登录 - 艺术碰撞</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* 抽象几何背景 */
+        .abstract-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            animation: shapeRotate 15s linear infinite;
+        }
+
+        .shape:nth-child(1) {
+            width: 200px;
+            height: 200px;
+            top: 10%;
+            left: 15%;
+            transform: rotate(45deg);
+            animation-delay: 0s;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .shape:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            bottom: 20%;
+            right: 10%;
+            transform: rotate(30deg);
+            animation-delay: 5s;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .shape:nth-child(3) {
+            width: 250px;
+            height: 250px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(60deg);
+            border-radius: 50%;
+            animation-delay: 10s;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        @keyframes shapeRotate {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        /* 粒子动画 */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .particle {
+            position: absolute;
+            background: #ffffff;
+            border-radius: 50%;
+            animation: particleMove 10s linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes particleMove {
+            0% {
+                transform: translate(var(--x-start), var(--y-start)) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+                transform: translate(var(--x-mid), var(--y-mid)) scale(1);
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translate(var(--x-end), var(--y-end)) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* 主容器 */
+        .login-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 450px;
+            padding: 20px;
+        }
+
+        /* 抽象卡片 */
+        .abstract-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 50px 40px;
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.1);
+            animation: cardFadeIn 1s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes cardFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 标题区域 */
+        .header-content {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .card-title {
+            font-size: 2.8rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            animation: titleGlow 1.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            from { text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
+            to { text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.3); }
+        }
+
+        .card-subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+            font-weight: 300;
+            animation: subtitleFade 1s ease-out 0.5s both;
+        }
+
+        @keyframes subtitleFade {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 表单样式 */
+        .form-group {
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .input-field {
+            position: relative;
+        }
+
+        .abstract-input {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-weight: 400;
+        }
+
+        .abstract-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .abstract-input:focus {
+            outline: none;
+            border-color: #a55eea;
+            box-shadow: 0 0 0 4px rgba(165, 94, 234, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        /* 登录按钮 */
+        .abstract-btn {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #a55eea, #ec4899);
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            margin: 32px 0 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .abstract-btn::before {
+            content: ">";
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5em;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .abstract-btn:hover::before {
+            left: 10px;
+            opacity: 1;
+        }
+
+        .abstract-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(165, 94, 234, 0.3);
+        }
+
+        .abstract-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .abstract-btn span {
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease;
+        }
+
+        .abstract-btn:hover span {
+            transform: translateX(15px);
+        }
+
+        /* 功能选项 */
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+        }
+
+        .abstract-checkbox {
+            margin-right: 8px;
+            accent-color: #a55eea;
+            transform: scale(1.1);
+        }
+
+        .forgot-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .forgot-link::after {
+            content: ">";
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .forgot-link:hover::after {
+            right: -10px;
+            opacity: 1;
+        }
+
+        .forgot-link:hover {
+            color: #ec4899;
+        }
+
+        /* 分割线 */
+        .abstract-divider {
+            text-align: center;
+            margin: 32px 0;
+            position: relative;
+        }
+
+        .abstract-divider::before {
+            content: ">";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 1.2em;
+            animation: dividerPulse 2s infinite alternate;
+        }
+
+        .abstract-divider::after {
+            content: ">";
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%) rotateY(180deg);
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 1.2em;
+            animation: dividerPulse 2s infinite alternate reverse;
+        }
+
+        @keyframes dividerPulse {
+            0% { opacity: 0.5; transform: translateY(-50%) scale(1); }
+            100% { opacity: 1; transform: translateY(-50%) scale(1.2); }
+        }
+
+        .abstract-divider span {
+            background: rgba(0, 0, 0, 0.3);
+            color: rgba(255, 255, 255, 0.6);
+            padding: 0 20px;
+            font-size: 0.9rem;
+        }
+
+        /* 社交登录 */
+        .social-login {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 24px;
+        }
+
+        .social-btn {
+            flex: 1;
+            padding: 14px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .social-btn:hover {
+            border-color: #a55eea;
+            color: #a55eea;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(165, 94, 234, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* 注册链接 */
+        .signup-section {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+        }
+
+        .signup-link {
+            color: #ec4899;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .signup-link:hover {
+            color: #a55eea;
+        }
+
+        /* 返回按钮 */
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            z-index: 20;
+        }
+
+        .back-btn:hover {
+            background: rgba(0, 0, 0, 0.5);
+            border-color: #a55eea;
+            color: #a55eea;
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(165, 94, 234, 0.2);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 480px) {
+            .abstract-card {
+                padding: 40px 24px;
+                margin: 20px;
+            }
+            
+            .card-title {
+                font-size: 2.2rem;
+            }
+            
+            .form-options {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+            
+            .social-login {
+                flex-direction: column;
+            }
+        }
+
+        /* 加载动画 */
+        .loading-abstract {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #ffffff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- 返回按钮 -->
+    <a href="../index.html" class="back-btn">←</a>
+
+    <!-- 抽象几何背景 -->
+    <div class="abstract-bg">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <!-- 粒子动画 -->
+    <div class="particles" id="particles-container"></div>
+
+    <!-- 登录容器 -->
+    <div class="login-container">
+        <div class="abstract-card">
+            <div class="header-content">
+                <h1 class="card-title">抽象登录</h1>
+                <p class="card-subtitle">几何艺术，色彩碰撞</p>
+            </div>
+            
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <div class="input-field">
+                        <input type="email" class="abstract-input" placeholder="您的邮箱" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="input-field">
+                        <input type="password" class="abstract-input" placeholder="您的密码" required>
+                    </div>
+                </div>
+                
+                <div class="form-options">
+                    <label class="checkbox-group">
+                        <input type="checkbox" class="abstract-checkbox">
+                        记住我
+                    </label>
+                    <a href="#" class="forgot-link">忘记密码？</a>
+                </div>
+                
+                <button type="submit" class="abstract-btn">
+                    <span>进入</span>
+                </button>
+                
+                <div class="abstract-divider">
+                    <span>或通过</span>
+                </div>
+                
+                <div class="social-login">
+                    <button type="button" class="social-btn">Google</button>
+                    <button type="button" class="social-btn">微信</button>
+                    <button type="button" class="social-btn">QQ</button>
+                </div>
+                
+                <div class="signup-section">
+                    还没有账户？ <a href="#" class="signup-link">注册新账户</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../assets/js/main.js"></script>
+    <script>
+        // 创建粒子
+        function createParticles() {
+            const container = document.getElementById('particles-container');
+            const count = 50;
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                const size = Math.random() * 4 + 2; // 2px to 6px
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                const startX = Math.random() * window.innerWidth;
+                const startY = Math.random() * window.innerHeight;
+                const endX = Math.random() * window.innerWidth;
+                const endY = Math.random() * window.innerHeight;
+                const midX = (startX + endX) / 2 + (Math.random() - 0.5) * 200;
+                const midY = (startY + endY) / 2 + (Math.random() - 0.5) * 200;
+
+                particle.style.setProperty('--x-start', `${startX}px`);
+                particle.style.setProperty('--y-start', `${startY}px`);
+                particle.style.setProperty('--x-mid', `${midX}px`);
+                particle.style.setProperty('--y-mid', `${midY}px`);
+                particle.style.setProperty('--x-end', `${endX}px`);
+                particle.style.setProperty('--y-end', `${endY}px`);
+
+                particle.style.animationDelay = Math.random() * 10 + 's';
+                particle.style.animationDuration = (Math.random() * 5 + 8) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        // 页面加载动画和交互效果
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+
+            // 按钮点击效果
+            const loginBtn = document.querySelector('.abstract-btn');
+            loginBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const btnText = this.querySelector('span');
+                const originalText = btnText.textContent;
+                
+                btnText.innerHTML = '加载中 <span class="loading-abstract"></span>';
+                this.disabled = true;
+                
+                setTimeout(() => {
+                    btnText.textContent = '进入成功！';
+                    this.style.background = 'linear-gradient(135deg, #48bb78, #38a169)';
+                }, 1500);
+                
+                setTimeout(() => {
+                    btnText.textContent = originalText;
+                    this.style.background = 'linear-gradient(135deg, #a55eea, #ec4899)';
+                    this.disabled = false;
+                    alert('登录成功！这是一个演示页面。');
+                }, 3000);
+            });
+
+            // 鼠标移动视差效果
+            document.addEventListener('mousemove', function(e) {
+                const card = document.querySelector('.abstract-card');
+                const shapes = document.querySelectorAll('.shape');
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
+                
+                const cardXOffset = (x - 0.5) * 10;
+                const cardYOffset = (y - 0.5) * 10;
+                card.style.transform = `translate(${cardXOffset}px, ${cardYOffset}px)`;
+
+                shapes.forEach((shape, index) => {
+                    const speed = (index + 1) * 0.5;
+                    const shapeXOffset = (x - 0.5) * speed * 20;
+                    const shapeYOffset = (y - 0.5) * speed * 20;
+                    shape.style.transform = `translate(${shapeXOffset}px, ${shapeYOffset}px) rotate(${index * 45 + (x * 10)}deg)`;
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>霓虹赛博朋克登录 - 未来科技</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <style>
+        body {
+            background: #0a0a0a;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* 赛博朋克背景 */
+        .cyber-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, #ff00ff 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, #00ffff 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, #ff0080 0%, transparent 50%);
+            animation: bgPulse 4s ease-in-out infinite alternate;
+            z-index: 1;
+        }
+
+        @keyframes bgPulse {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.6; }
+        }
+
+        /* 数字雨效果 */
+        .matrix-rain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .matrix-column {
+            position: absolute;
+            top: -100px;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            animation: matrixFall 8s linear infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes matrixFall {
+            0% { transform: translateY(-100px); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+
+        /* 扫描线效果 */
+        .scan-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 255, 255, 0.03) 2px,
+                rgba(0, 255, 255, 0.03) 4px
+            );
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        /* 主容器 */
+        .login-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 450px;
+            padding: 20px;
+        }
+
+        /* 赛博朋克卡片 */
+        .cyber-card {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #00ffff;
+            border-radius: 0;
+            padding: 40px;
+            box-shadow: 
+                0 0 50px rgba(0, 255, 255, 0.3),
+                inset 0 0 50px rgba(0, 255, 255, 0.1);
+            animation: cardGlow 2s ease-in-out infinite alternate;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cyber-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff);
+            z-index: -1;
+            animation: borderRotate 3s linear infinite;
+        }
+
+        .cyber-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: -1;
+        }
+
+        @keyframes cardGlow {
+            0% { box-shadow: 0 0 50px rgba(0, 255, 255, 0.3), inset 0 0 50px rgba(0, 255, 255, 0.1); }
+            100% { box-shadow: 0 0 80px rgba(0, 255, 255, 0.5), inset 0 0 80px rgba(0, 255, 255, 0.2); }
+        }
+
+        @keyframes borderRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 标题区域 */
+        .title-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .cyber-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #00ffff;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            animation: titleFlicker 1.5s ease-in-out infinite alternate;
+            text-shadow: 
+                0 0 10px #00ffff,
+                0 0 20px #00ffff,
+                0 0 30px #00ffff;
+        }
+
+        @keyframes titleFlicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        .cyber-subtitle {
+            color: #ff00ff;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: subtitleGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes subtitleGlow {
+            0% { text-shadow: 0 0 5px #ff00ff; }
+            100% { text-shadow: 0 0 15px #ff00ff, 0 0 25px #ff00ff; }
+        }
+
+        /* 表单样式 */
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .cyber-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 1px solid #00ffff;
+            border-radius: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: #00ffff;
+            font-size: 16px;
+            font-family: 'Courier New', monospace;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cyber-input::placeholder {
+            color: rgba(0, 255, 255, 0.5);
+            text-transform: uppercase;
+        }
+
+        .cyber-input:focus {
+            outline: none;
+            border-color: #ff00ff;
+            box-shadow: 
+                0 0 20px rgba(255, 0, 255, 0.5),
+                inset 0 0 20px rgba(255, 0, 255, 0.1);
+            background: rgba(0, 0, 0, 0.9);
+        }
+
+        /* 输入框标签 */
+        .input-label {
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            background: #0a0a0a;
+            color: #00ffff;
+            font-size: 12px;
+            padding: 0 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* 登录按钮 */
+        .cyber-btn {
+            width: 100%;
+            padding: 18px;
+            border: 2px solid #ff00ff;
+            border-radius: 0;
+            background: rgba(255, 0, 255, 0.1);
+            color: #ff00ff;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 30px 0 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cyber-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 0, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .cyber-btn:hover::before {
+            left: 100%;
+        }
+
+        .cyber-btn:hover {
+            background: rgba(255, 0, 255, 0.2);
+            box-shadow: 
+                0 0 30px rgba(255, 0, 255, 0.6),
+                inset 0 0 30px rgba(255, 0, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .cyber-btn:active {
+            transform: translateY(0);
+        }
+
+        /* 功能区域 */
+        .cyber-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .cyber-checkbox {
+            display: flex;
+            align-items: center;
+            color: #00ffff;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cyber-checkbox input {
+            margin-right: 10px;
+            accent-color: #00ffff;
+        }
+
+        .cyber-link {
+            color: #ff00ff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .cyber-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #ff00ff;
+            transition: width 0.3s ease;
+        }
+
+        .cyber-link:hover::after {
+            width: 100%;
+        }
+
+        .cyber-link:hover {
+            text-shadow: 0 0 10px #ff00ff;
+        }
+
+        /* 分割线 */
+        .cyber-divider {
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .cyber-divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #00ffff, transparent);
+        }
+
+        .cyber-divider span {
+            background: #0a0a0a;
+            color: #00ffff;
+            padding: 0 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+        }
+
+        /* 注册区域 */
+        .signup-section {
+            text-align: center;
+            color: #00ffff;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .signup-link {
+            color: #ff00ff;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .signup-link:hover {
+            text-shadow: 0 0 15px #ff00ff;
+        }
+
+        /* 返回按钮 */
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #00ffff;
+            border-radius: 0;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #00ffff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            z-index: 20;
+            font-family: 'Courier New', monospace;
+            font-weight: 700;
+        }
+
+        .back-btn:hover {
+            background: rgba(0, 255, 255, 0.1);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+            transform: scale(1.1);
+        }
+
+        /* 故障效果 */
+        .glitch {
+            animation: glitch 2s infinite;
+        }
+
+        @keyframes glitch {
+            0%, 100% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 480px) {
+            .cyber-card {
+                padding: 30px 20px;
+                margin: 20px;
+            }
+            
+            .cyber-title {
+                font-size: 2rem;
+                letter-spacing: 2px;
+            }
+            
+            .cyber-options {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 返回按钮 -->
+    <a href="../index.html" class="back-btn">←</a>
+
+    <!-- 赛博朋克背景 -->
+    <div class="cyber-bg"></div>
+
+    <!-- 数字雨效果 -->
+    <div class="matrix-rain" id="matrixRain"></div>
+
+    <!-- 扫描线效果 -->
+    <div class="scan-lines"></div>
+
+    <!-- 登录容器 -->
+    <div class="login-container">
+        <div class="cyber-card">
+            <div class="title-section">
+                <h1 class="cyber-title glitch">ACCESS</h1>
+                <p class="cyber-subtitle">NEURAL INTERFACE</p>
+            </div>
+            
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label class="input-label">USER ID</label>
+                    <input type="email" class="cyber-input" placeholder="Enter User ID" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="input-label">PASSWORD</label>
+                    <input type="password" class="cyber-input" placeholder="Enter Password" required>
+                </div>
+                
+                <div class="cyber-options">
+                    <label class="cyber-checkbox">
+                        <input type="checkbox">
+                        Remember
+                    </label>
+                    <a href="#" class="cyber-link">Forgot Access?</a>
+                </div>
+                
+                <button type="submit" class="cyber-btn">CONNECT</button>
+                
+                <div class="cyber-divider">
+                    <span>New User?</span>
+                </div>
+                
+                <div class="signup-section">
+                    Need Access? <a href="#" class="signup-link">Register Now</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../assets/js/main.js"></script>
+    <script>
+        // 创建数字雨效果
+        function createMatrixRain() {
+            const matrixContainer = document.getElementById('matrixRain');
+            const characters = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+            
+            for (let i = 0; i < 15; i++) {
+                const column = document.createElement('div');
+                column.className = 'matrix-column';
+                column.style.left = Math.random() * 100 + '%';
+                column.style.animationDelay = Math.random() * 8 + 's';
+                column.style.animationDuration = (Math.random() * 3 + 5) + 's';
+                
+                let text = '';
+                for (let j = 0; j < 20; j++) {
+                    text += characters.charAt(Math.floor(Math.random() * characters.length)) + '<br>';
+                }
+                column.innerHTML = text;
+                
+                matrixContainer.appendChild(column);
+            }
+        }
+
+        // 页面加载动画和交互效果
+        document.addEventListener('DOMContentLoaded', function() {
+            createMatrixRain();
+            
+            // 添加输入框聚焦效果
+            const inputs = document.querySelectorAll('.cyber-input');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.style.textShadow = '0 0 10px #00ffff';
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.style.textShadow = 'none';
+                });
+
+                // 添加打字机效果
+                input.addEventListener('input', function() {
+                    this.style.animation = 'none';
+                    setTimeout(() => {
+                        this.style.animation = 'glitch 0.1s';
+                    }, 10);
+                });
+            });
+
+            // 添加随机故障效果
+            setInterval(() => {
+                const elements = document.querySelectorAll('.cyber-title, .cyber-subtitle');
+                elements.forEach(el => {
+                    if (Math.random() < 0.1) {
+                        el.style.animation = 'none';
+                        setTimeout(() => {
+                            el.style.animation = 'glitch 0.3s, titleFlicker 1.5s ease-in-out infinite alternate';
+                        }, 10);
+                    }
+                });
+            }, 2000);
+
+            // 添加键盘音效模拟
+            document.addEventListener('keydown', function(e) {
+                if (e.target.classList.contains('cyber-input')) {
+                    // 模拟键盘音效的视觉反馈
+                    e.target.style.borderColor = '#ff00ff';
+                    setTimeout(() => {
+                        e.target.style.borderColor = '#00ffff';
+                    }, 100);
+                }
+            });
+        });
+
+        // 添加鼠标移动光效
+        document.addEventListener('mousemove', function(e) {
+            const card = document.querySelector('.cyber-card');
+            const rect = card.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            
+            card.style.background = `
+                radial-gradient(circle at ${x}% ${y}%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+                rgba(0, 0, 0, 0.8)
+            `;
+        });
+    </script>
+</body>
+</html>
+

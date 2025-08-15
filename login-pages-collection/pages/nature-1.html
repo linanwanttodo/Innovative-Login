@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自然清新登录 - 有机设计</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* 有机形状背景 */
+        .organic-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .organic-shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50% 30% 70% 40%;
+            animation: organicMove 20s ease-in-out infinite;
+        }
+
+        .organic-shape:nth-child(1) {
+            width: 300px;
+            height: 200px;
+            top: -50px;
+            left: -100px;
+            background: rgba(168, 237, 234, 0.3);
+            animation-delay: 0s;
+        }
+
+        .organic-shape:nth-child(2) {
+            width: 250px;
+            height: 180px;
+            bottom: -80px;
+            right: -120px;
+            background: rgba(254, 214, 227, 0.3);
+            animation-delay: 5s;
+        }
+
+        .organic-shape:nth-child(3) {
+            width: 200px;
+            height: 150px;
+            top: 30%;
+            left: -80px;
+            background: rgba(255, 183, 197, 0.2);
+            animation-delay: 10s;
+        }
+
+        .organic-shape:nth-child(4) {
+            width: 180px;
+            height: 120px;
+            bottom: 20%;
+            right: -60px;
+            background: rgba(168, 237, 234, 0.2);
+            animation-delay: 15s;
+        }
+
+        @keyframes organicMove {
+            0%, 100% {
+                transform: rotate(0deg) scale(1);
+                border-radius: 50% 30% 70% 40%;
+            }
+            25% {
+                transform: rotate(90deg) scale(1.1);
+                border-radius: 30% 70% 40% 50%;
+            }
+            50% {
+                transform: rotate(180deg) scale(0.9);
+                border-radius: 70% 40% 50% 30%;
+            }
+            75% {
+                transform: rotate(270deg) scale(1.05);
+                border-radius: 40% 50% 30% 70%;
+            }
+        }
+
+        /* 浮动叶子 */
+        .floating-leaves {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .leaf {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #4ade80;
+            border-radius: 0 100% 0 100%;
+            animation: leafFloat 8s ease-in-out infinite;
+            opacity: 0.6;
+        }
+
+        .leaf:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+            background: #34d399;
+        }
+
+        .leaf:nth-child(2) {
+            top: 60%;
+            right: 15%;
+            animation-delay: 2s;
+            background: #6ee7b7;
+        }
+
+        .leaf:nth-child(3) {
+            bottom: 30%;
+            left: 20%;
+            animation-delay: 4s;
+            background: #86efac;
+        }
+
+        .leaf:nth-child(4) {
+            top: 40%;
+            right: 30%;
+            animation-delay: 6s;
+            background: #bbf7d0;
+        }
+
+        @keyframes leafFloat {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+                opacity: 0.6;
+            }
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+                opacity: 1;
+            }
+        }
+
+        /* 主容器 */
+        .login-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 420px;
+            padding: 20px;
+        }
+
+        /* 自然卡片 */
+        .nature-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 0;
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.2);
+            animation: cardGrow 1.2s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes cardGrow {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* 卡片装饰 */
+        .card-decoration {
+            height: 8px;
+            background: linear-gradient(90deg, #34d399, #6ee7b7, #86efac, #bbf7d0);
+            background-size: 200% 100%;
+            animation: decorationFlow 4s ease-in-out infinite;
+            border-radius: 30px 30px 0 0;
+        }
+
+        @keyframes decorationFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* 卡片内容 */
+        .card-body {
+            padding: 50px 40px;
+        }
+
+        /* 标题区域 */
+        .header-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .nature-title {
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: #065f46;
+            margin-bottom: 8px;
+            animation: titleSlideIn 1s ease-out 0.3s both;
+        }
+
+        .nature-subtitle {
+            color: #059669;
+            font-size: 1rem;
+            font-weight: 400;
+            animation: titleSlideIn 1s ease-out 0.5s both;
+        }
+
+        @keyframes titleSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 表单样式 */
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .nature-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+        }
+
+        .nature-input {
+            width: 100%;
+            padding: 18px 24px 18px 55px;
+            border: 2px solid #d1fae5;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            color: #065f46;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-weight: 400;
+        }
+
+        .nature-input::placeholder {
+            color: #6ee7b7;
+        }
+
+        .nature-input:focus {
+            outline: none;
+            border-color: #34d399;
+            box-shadow: 0 0 0 4px rgba(52, 211, 153, 0.1);
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        /* 输入框图标 */
+        .input-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.3rem;
+            color: #6ee7b7;
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+
+        .nature-input:focus + .input-icon {
+            color: #34d399;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        /* 波纹效果 */
+        .nature-input-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(52, 211, 153, 0.1), transparent);
+            transition: left 0.6s;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .nature-input:focus ~ .nature-input-wrapper::before {
+            left: 100%;
+        }
+
+        /* 自然按钮 */
+        .nature-btn {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #34d399, #10b981);
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            margin: 32px 0 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nature-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #10b981, #059669);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .nature-btn:hover::before {
+            opacity: 1;
+        }
+
+        .nature-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(52, 211, 153, 0.3);
+        }
+
+        .nature-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .nature-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 功能选项 */
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            color: #059669;
+            font-size: 0.9rem;
+        }
+
+        .nature-checkbox {
+            margin-right: 8px;
+            accent-color: #34d399;
+            transform: scale(1.2);
+        }
+
+        .forgot-link {
+            color: #059669;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .forgot-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #34d399, #10b981);
+            transition: width 0.3s ease;
+        }
+
+        .forgot-link:hover::after {
+            width: 100%;
+        }
+
+        .forgot-link:hover {
+            color: #10b981;
+        }
+
+        /* 分割线 */
+        .nature-divider {
+            text-align: center;
+            margin: 32px 0;
+            position: relative;
+        }
+
+        .nature-divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #d1fae5, transparent);
+        }
+
+        .nature-divider span {
+            background: rgba(255, 255, 255, 0.9);
+            color: #6ee7b7;
+            padding: 0 20px;
+            font-size: 0.9rem;
+        }
+
+        /* 社交登录 */
+        .social-buttons {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .social-btn {
+            flex: 1;
+            padding: 14px;
+            border: 2px solid #d1fae5;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.8);
+            color: #059669;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .social-btn:hover {
+            border-color: #34d399;
+            color: #10b981;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(52, 211, 153, 0.2);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        /* 注册链接 */
+        .signup-text {
+            text-align: center;
+            color: #059669;
+            font-size: 0.9rem;
+        }
+
+        .signup-link {
+            color: #10b981;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .signup-link:hover {
+            color: #059669;
+        }
+
+        /* 返回按钮 */
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 2px solid #d1fae5;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #059669;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            z-index: 20;
+        }
+
+        .back-btn:hover {
+            background: #ffffff;
+            border-color: #34d399;
+            color: #10b981;
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(52, 211, 153, 0.2);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 480px) {
+            .card-body {
+                padding: 40px 24px;
+            }
+            
+            .nature-title {
+                font-size: 2rem;
+            }
+            
+            .form-options {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+            
+            .social-buttons {
+                flex-direction: column;
+            }
+        }
+
+        /* 加载动画 */
+        .loading-nature {
+            display: inline-flex;
+            gap: 4px;
+        }
+
+        .loading-leaf {
+            width: 8px;
+            height: 8px;
+            background: #34d399;
+            border-radius: 0 100% 0 100%;
+            animation: leafPulse 1.4s ease-in-out infinite both;
+        }
+
+        .loading-leaf:nth-child(1) { animation-delay: -0.32s; }
+        .loading-leaf:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes leafPulse {
+            0%, 80%, 100% {
+                transform: scale(0.8) rotate(0deg);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1) rotate(180deg);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 返回按钮 -->
+    <a href="../index.html" class="back-btn">←</a>
+
+    <!-- 有机形状背景 -->
+    <div class="organic-shapes">
+        <div class="organic-shape"></div>
+        <div class="organic-shape"></div>
+        <div class="organic-shape"></div>
+        <div class="organic-shape"></div>
+    </div>
+
+    <!-- 浮动叶子 -->
+    <div class="floating-leaves">
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+        <div class="leaf"></div>
+    </div>
+
+    <!-- 登录容器 -->
+    <div class="login-container">
+        <div class="nature-card">
+            <div class="card-decoration"></div>
+            
+            <div class="card-body">
+                <div class="header-section">
+                    <h1 class="nature-title">自然登录</h1>
+                    <p class="nature-subtitle">清新自然，回归本真</p>
+                </div>
+                
+                <form id="loginForm" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <div class="nature-input-wrapper">
+                            <input type="email" class="nature-input" placeholder="邮箱地址" required>
+                            <span class="input-icon">🌿</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="nature-input-wrapper">
+                            <input type="password" class="nature-input" placeholder="密码" required>
+                            <span class="input-icon">🍃</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-options">
+                        <label class="checkbox-label">
+                            <input type="checkbox" class="nature-checkbox">
+                            记住我
+                        </label>
+                        <a href="#" class="forgot-link">忘记密码？</a>
+                    </div>
+                    
+                    <button type="submit" class="nature-btn">
+                        <span>登录</span>
+                    </button>
+                    
+                    <div class="nature-divider">
+                        <span>或者使用</span>
+                    </div>
+                    
+                    <div class="social-buttons">
+                        <button type="button" class="social-btn">Google</button>
+                        <button type="button" class="social-btn">微信</button>
+                        <button type="button" class="social-btn">QQ</button>
+                    </div>
+                    
+                    <div class="signup-text">
+                        还没有账户？ <a href="#" class="signup-link">立即注册</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/js/main.js"></script>
+    <script>
+        // 页面加载动画和交互效果
+        document.addEventListener('DOMContentLoaded', function() {
+            // 添加输入框动画效果
+            const inputs = document.querySelectorAll('.nature-input');
+            inputs.forEach((input, index) => {
+                input.addEventListener('focus', function() {
+                    this.parentElement.style.transform = 'scale(1.02)';
+                    this.parentElement.style.boxShadow = '0 10px 25px rgba(52, 211, 153, 0.2)';
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.parentElement.style.transform = 'scale(1)';
+                    this.parentElement.style.boxShadow = 'none';
+                });
+
+                // 添加打字效果
+                input.addEventListener('input', function() {
+                    const icon = this.nextElementSibling;
+                    icon.style.transform = 'translateY(-50%) scale(1.2)';
+                    setTimeout(() => {
+                        icon.style.transform = 'translateY(-50%) scale(1)';
+                    }, 200);
+                });
+            });
+
+            // 添加按钮点击效果
+            const natureBtn = document.querySelector('.nature-btn');
+            natureBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const originalText = this.querySelector('span').textContent;
+                this.querySelector('span').innerHTML = '登录中 <span class="loading-nature"><span class="loading-leaf"></span><span class="loading-leaf"></span><span class="loading-leaf"></span></span>';
+                this.disabled = true;
+                
+                // 添加成长动画
+                this.style.transform = 'scale(1.05)';
+                
+                setTimeout(() => {
+                    this.querySelector('span').textContent = '登录成功 🌱';
+                    this.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+                    this.style.transform = 'scale(1)';
+                }, 2000);
+                
+                setTimeout(() => {
+                    this.querySelector('span').textContent = originalText;
+                    this.style.background = 'linear-gradient(135deg, #34d399, #10b981)';
+                    this.disabled = false;
+                    alert('登录成功！这是一个演示页面。');
+                }, 4000);
+            });
+
+            // 添加社交按钮动画
+            const socialBtns = document.querySelectorAll('.social-btn');
+            socialBtns.forEach((btn, index) => {
+                btn.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                });
+            });
+
+            // 添加鼠标移动有机效果
+            document.addEventListener('mousemove', function(e) {
+                const shapes = document.querySelectorAll('.organic-shape');
+                const leaves = document.querySelectorAll('.leaf');
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
+                
+                shapes.forEach((shape, index) => {
+                    const speed = (index + 1) * 0.3;
+                    const xOffset = (x - 0.5) * speed * 20;
+                    const yOffset = (y - 0.5) * speed * 20;
+                    
+                    shape.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
+                });
+
+                leaves.forEach((leaf, index) => {
+                    const speed = (index + 1) * 0.5;
+                    const xOffset = (x - 0.5) * speed * 15;
+                    const yOffset = (y - 0.5) * speed * 15;
+                    
+                    leaf.style.transform = `translate(${xOffset}px, ${yOffset}px) rotate(${x * 360}deg)`;
+                });
+            });
+
+            // 添加呼吸动画
+            const card = document.querySelector('.nature-card');
+            setInterval(() => {
+                card.style.transform = 'scale(1.01)';
+                setTimeout(() => {
+                    card.style.transform = 'scale(1)';
+                }, 1000);
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
+
